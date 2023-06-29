@@ -9,7 +9,7 @@ class Button:
         width = image.get_width()
         height = image.get_height()
         self.scale = scale
-        self.image = pygame.transform.scale(image, int(width * scale), int(height * scale))
+        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
         self.clicked = False
@@ -28,9 +28,7 @@ class Button:
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
 
-        check = False
+        #draw button on screen
+        window.blit(self.image, (self.rect.x, self.rect.y))
 
-        if check:
-            check = True
-        
-        return check
+        return inAction
