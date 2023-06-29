@@ -23,16 +23,16 @@ clock = pygame.time.Clock()
 elapsedTime = 0
 
 #menu background
-menu_background = pygame.image.load("menu_background.jpg")
+menu_background = pygame.image.load("PicturesUsed/menu_background.jpg")
 menu_background = pygame.transform.scale(menu_background,background_size)
 
 #load images
-start_button = pygame.image.load("startButton.png")
-difficulty_button = pygame.image.load("difficultyButton.png")
-map_button = pygame.image.load("mapButton.png")
-back_button = pygame.image.load("backButton.png")
-exit_button = pygame.image.load("exitButton.png")
-resume_button = pygame.image.load("resumeButton.png")
+start_button = pygame.image.load("PicturesUsed/startButton.png")
+difficulty_button = pygame.image.load("PicturesUsed/difficultyButton.png")
+map_button = pygame.image.load("PicturesUsed/mapButton.png")
+back_button = pygame.image.load("PicturesUsed/backButton.png")
+exit_button = pygame.image.load("PicturesUsed/exitButton.png")
+resume_button = pygame.image.load("PicturesUsed/resumeButton.png")
 
 #call buttons into button class
 start_img = LobbyScreenCode.Button(330, 30, start_button, 2)
@@ -43,22 +43,22 @@ exit_img = LobbyScreenCode.Button(330,330, exit_button, 2)
 resume_img = LobbyScreenCode.Button(310,90, resume_button, 2.5)
 
 #winter game background
-winter_game_background = pygame.image.load("winter_game_background.jpg")
+winter_game_background = pygame.image.load("PicturesUsed/winter_game_background.jpg")
 winter_mapPick = pygame.transform.scale(winter_game_background, mapPick_size)
 winter_game_background = pygame.transform.scale(winter_game_background, background_size)
 
 #volcano game background
-volcano_game_background = pygame.image.load("volcano_game_background.webp")
+volcano_game_background = pygame.image.load("PicturesUsed/volcano_game_background.webp")
 volcano_mapPick = pygame.transform.scale(volcano_game_background, mapPick_size)
 volcano_game_background = pygame.transform.scale(volcano_game_background, background_size)
 
 #desert game background
-desert_game_background = pygame.image.load("desert_game_background.jpg")
+desert_game_background = pygame.image.load("PicturesUsed/desert_game_background.jpg")
 desert_mapPick = pygame.transform.scale(desert_game_background, mapPick_size)
 desert_game_background = pygame.transform.scale(desert_game_background, background_size)
 
 #grassy game background
-grassy_game_background = pygame.image.load("grassy_game_background.jpg")
+grassy_game_background = pygame.image.load("PicturesUsed/grassy_game_background.jpg")
 grassy_mapPick = pygame.transform.scale(grassy_game_background, mapPick_size)
 grassy_game_background = pygame.transform.scale(grassy_game_background, background_size)
 
