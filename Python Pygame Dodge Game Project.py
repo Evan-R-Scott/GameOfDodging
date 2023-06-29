@@ -1,5 +1,7 @@
 #import statements
 import pygame
+import time
+import random
 import LobbyScreenCode
 #main loop code
 pygame.init()
@@ -16,6 +18,9 @@ mapPick_size = (200, 100)
 #initialize game state to main aka lobby screen
 menuState = "main"
 
+#clock timer
+clock = pygame.time.Clock()
+elapsedTime = 0
 
 #menu background
 menu_background = pygame.image.load("menu_background.jpg")
@@ -73,12 +78,14 @@ pygame.display.set_caption("Dodge Game")
 #Set up font settings
 color = (52,78,91)
 textColor = (255,255,255)
+TimeFont = pygame.font.SysFont("Arial", 20)
 pausedFont = pygame.font.SysFont("Arial", 36)
 UnpauseTxt= pausedFont.render("Press SPACE BAR to resume the game.", True, textColor)
 Or = pausedFont.render("OR", True, textColor)
 EscTxt= pausedFont.render("Press ESC to exit the application.", True, textColor)
 mainTxt = pausedFont.render("Press TAB to pause the game.", True, textColor)
 MapTxt= pausedFont.render("Select A Map", True, textColor)
+DifficultyTxt= pausedFont.render("Select A Difficulty", True, textColor)
 
 #game loop
 run = True
@@ -93,15 +100,30 @@ while run:
         if start_img.lobbyScreen(screen):
             print("Game Starting")
             menuState = "game"
+            startTime = time.time()
         elif difficulty_img.lobbyScreen(screen):
-            print("Difficulty")
+            menuState = "difficulty"
         elif map_img.lobbyScreen(screen):
             menuState = "map"
         elif exit_img.lobbyScreen(screen):
             run = False
     #in game 
     elif menuState == "game":
+
+        clock.tick(60)
+        elapsedTime = time.time() - startTime
+        TimeTxt = TimeFont.render(f"Time: {round(elapsedTime)}s", 1, "black")
+
         screen.blit(background, topLeft)
+        screen.blit(TimeTxt, (700, 20))
+
+    #in difficulty settings
+    elif menuState == "difficulty":
+        screen.fill(color)
+        screen.blit(DifficultyTxt, (screen_width //2 - 2.45 *DifficultyTxt.get_height() , 350))
+
+        if back_img.lobbyScreen(screen):
+            menuState = "main"
 
     #in pause menu
     elif menuState == "gamePaused":
@@ -115,6 +137,7 @@ while run:
             print("Game Resumed")
             menuState = "game"
 
+    #in map settings
     elif menuState == "map":
         screen.fill(color)
         screen.blit(MapTxt, (screen_width //2 - 2.2 *MapTxt.get_height() , 225))
