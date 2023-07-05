@@ -66,13 +66,16 @@ def draw(player_location):
 menu_background = pygame.image.load("PicturesUsed/menu_background.jpg")
 menu_background = pygame.transform.scale(menu_background,background_size)
 
-#load images
+#load button images
 start_button = pygame.image.load("PicturesUsed/startButton.png")
 difficulty_button = pygame.image.load("PicturesUsed/difficultyButton.png")
 map_button = pygame.image.load("PicturesUsed/mapButton.png")
 back_button = pygame.image.load("PicturesUsed/backButton.png")
 exit_button = pygame.image.load("PicturesUsed/exitButton.png")
 resume_button = pygame.image.load("PicturesUsed/resumeButton.png")
+easy_button = pygame.image.load("PicturesUsed/EasyButton.png")
+medium_button = pygame.image.load("PicturesUsed/MediumButton.png")
+hard_button = pygame.image.load("PicturesUsed/HardButton.png")
 
 #call buttons into button class
 start_img = LobbyScreenCode.Button(330, 30, start_button, 2)
@@ -81,6 +84,9 @@ map_img = LobbyScreenCode.Button(330, 230, map_button, 2)
 back_img = LobbyScreenCode.Button(330, 500, back_button, 2)
 exit_img = LobbyScreenCode.Button(330,330, exit_button, 2)
 resume_img = LobbyScreenCode.Button(310,90, resume_button, 2.5)
+easy_img = LobbyScreenCode.Button(130,150, easy_button, 2)
+medium_img = LobbyScreenCode.Button(330,150, medium_button, 2)
+hard_img = LobbyScreenCode.Button(530,150, hard_button, 2)
 
 #winter game background
 winter_game_background = pygame.image.load("PicturesUsed/winter_game_background.jpg")
@@ -171,32 +177,32 @@ while run:
 
         #easy difficulty
         if star_count > star_add and difficultyState == "easy":
-            for _ in range(3):
+            for _ in range(random.randint(2,4)):
                 star_x = random.randint(0, screen_width - star_width)
                 star = pygame.Rect(star_x, -star_height, star_width, star_height)
                 stars.append(star)
 
-            star_add = max(1000, star_add - 50)
+            star_add = max(800, star_add - 50)
             star_count = 0
 
         #medium difficulty
         if star_count > star_add and difficultyState == "medium":
-            for _ in range(5):
+            for _ in range(random.randint(3,6)):
                 star_x = random.randint(0, screen_width - star_width)
                 star = pygame.Rect(star_x, -star_height, star_width, star_height)
                 stars.append(star)
 
-            star_add = max(400, star_add - 80)
+            star_add = max(500, star_add - 60)
             star_count = 0
 
         #hard difficulty
         if star_count > star_add and difficultyState == "hard":
-            for _ in range(7):
+            for _ in range(random.randint(4,7)):
                 star_x = random.randint(0, screen_width - star_width)
                 star = pygame.Rect(star_x, -star_height, star_width, star_height)
                 stars.append(star)
 
-            star_add = max(100, star_add - 100)
+            star_add = max(400, star_add - 70)
             star_count = 0
 
         #draw projectiles on screen
@@ -216,6 +222,16 @@ while run:
     elif menuState == "difficulty":
         screen.fill(color)
         screen.blit(DifficultyTxt, (screen_width //2 - 2.45 *DifficultyTxt.get_height() , 350))
+
+        if easy_img.lobbyScreen(screen):
+            difficultyState = "easy"
+            print("Difficulty set to: Easy")
+        elif medium_img.lobbyScreen(screen):
+            difficultyState = "medium"
+            print("Difficulty set to: Medium")
+        elif hard_img.lobbyScreen(screen):
+            difficultyState = "hard"
+            print("Difficulty set to: Hard")
 
         if back_img.lobbyScreen(screen):
             menuState = "main"
@@ -241,20 +257,19 @@ while run:
         if back_img.lobbyScreen(screen):
             menuState = "main"
         if winter_game.lobbyScreen(screen):
-            print("Successful Map Change")
+            print("Successful map change to: Winterwonderland")
             player_location = "winter"
             background = winter_game_background
         elif volcano_game.lobbyScreen(screen):
-            print("Successful Map Change")
+            print("Successful map change: Volcanic Hell")
             player_location = "volcano"
-            print(player_location)
             background = volcano_game_background
         elif grassy_game.lobbyScreen(screen):
-            print("Successful Map Change")
+            print("Successful map change: Grasslands")
             player_location = "grassy"
             background = grassy_game_background
         elif desert_game.lobbyScreen(screen):
-            print("Successful Map Change")
+            print("Successful map change: Desert Oasis")
             player_location = "desert"
             background = desert_game_background
 
