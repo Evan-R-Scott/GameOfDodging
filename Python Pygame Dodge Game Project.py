@@ -3,6 +3,7 @@ import pygame
 import time
 import random
 import LobbyScreenCode
+
 #main loop code
 pygame.init()
 
@@ -118,25 +119,31 @@ pygame.display.set_caption("Dodge Game")
 color = (52,78,91)
 textColor = (255,255,255)
 TimeFont = pygame.font.SysFont("Arial", 20)
-pausedFont = pygame.font.SysFont("Arial", 36)
-UnpauseTxt= pausedFont.render("Press SPACE BAR to resume the game.", True, textColor)
-BackToMainTxt = pausedFont.render("Press SHIFT to go back to the main menu.", True, textColor)
-Or = pausedFont.render("OR", True, textColor)
-EscTxt= pausedFont.render("Press ESC to exit the application.", True, textColor)
-mainTxt = pausedFont.render("Press TAB to pause the game.", True, textColor)
-MapTxt= pausedFont.render("Select A Map", True, textColor)
-DifficultyTxt= pausedFont.render("Select A Difficulty", True, textColor)
-
+Font = pygame.font.SysFont("Arial", 36)
+UnpauseTxt= Font.render("Press SPACE BAR to resume the game.", True, textColor)
+BackToMainTxt = Font.render("Press SHIFT to go back to the main menu.", True, textColor)
+Or = Font.render("OR", True, textColor)
+EscTxt= Font.render("Press ESC to exit the application.", True, textColor)
+mainTxt = Font.render("Press TAB to pause the game.", True, textColor)
+MapTxt= Font.render("Select A Map", True, textColor)
+DifficultyTxt= Font.render("Select A Difficulty", True, textColor)
+LostText = Font.render("You Lost!", True, textColor)
 
 #game loop
 i = 0
 run = True
+restart = False
 while run:
 
     #in lobby screen 
     if menuState == "main":
         screen.blit(menu_background,topLeft)
         screen.blit(mainTxt, (screen_width //2 - 4.5 *mainTxt.get_height() , 500))
+
+        #resolves freezing issue caused by instantly starting new game after just losing
+        if restart:
+             pygame.time.delay(2000)
+             restart = False
 
         #handle the various button presses on the lobby screen
         if start_img.lobbyScreen(screen):
@@ -192,10 +199,18 @@ while run:
             star_add = max(100, star_add - 100)
             star_count = 0
 
-
+        #draw projectiles on screen
         for star in stars:
             pygame.draw.rect(screen, (255,255,255), star)
-        
+
+        #player was hit by projectile and lost
+        if hit:
+            screen.blit(LostText, (screen_width//2 - 0.4 * LostText.get_width(), 200))
+            pygame.display.update()
+            pygame.time.delay(2000)
+            hit = False
+            restart = True
+            menuState = "main"
 
     #in difficulty settings
     elif menuState == "difficulty":
@@ -245,10 +260,12 @@ while run:
 
     player_start, player_color = draw(player_location)
 
+    #draw initial player rectangle at start of game
     while i < 1:
         #create player shape
         player = pygame.Rect(200, player_start, player_width, player_height)
         i+=1
+        
     if menuState == "game":
         pygame.draw.rect(screen, player_color, player)
 
