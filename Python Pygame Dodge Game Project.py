@@ -1,3 +1,9 @@
+"""Author: Evan Scott
+Summary: Game created using python libary pygame to create a 
+game where a player must dodge flying projectiles
+Includes: main menu (Start, Difficulty and Map settings, Exit), 
+jumping/moving and collision mechanics for accurate gameplay
+Date Created: July 5,2023"""
 #import statements
 import pygame
 import time
