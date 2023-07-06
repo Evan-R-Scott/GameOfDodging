@@ -14,11 +14,11 @@ screen_width = 800
 #player dimensions and variable initialization
 player_width = 40
 player_height = 60
-player_velocity = 10
+player_velocityX = 10
 player_location = "grassy"
-base = screen_height - player_height -50
-player_start = base
+player_start = 490
 player_color = (255,0,0)
+x = 200
 
 #initializing projectiles variables
 star_add = 2000
@@ -28,6 +28,10 @@ star_width = 10
 star_height = 20
 star_velocity = 3
 hit = False
+
+#initializing jumping variables
+isJumping = False
+player_velocityY = 10
 
 #origin and screen dimensions as tuple for efficiency
 background_size = (screen_width, screen_height)
@@ -48,18 +52,14 @@ def draw(player_location):
 
     #adjust starting location and color of the player based on chosen map
     if player_location == "grassy":
-        player_start = base 
         player_color = (255,0,0)
     elif player_location == "volcano":
-        player_start = base - 118
         player_color = (0,0,255)
     elif player_location == "winter":
-        player_start = base - 85 
         player_color = (255,255,0)
-    elif player_location == "desert":
-        player_start = base - 60 
+    elif player_location == "desert": 
         player_color = (0,255,0)
-    return player_start, player_color
+    return player_color
 
     
 #menu background
@@ -140,7 +140,6 @@ i = 0
 run = True
 restart = False
 while run:
-
     #in lobby screen 
     if menuState == "main":
         screen.blit(menu_background,topLeft)
@@ -273,12 +272,12 @@ while run:
             player_location = "desert"
             background = desert_game_background
 
-    player_start, player_color = draw(player_location)
+    player_color = draw(player_location)
 
     #draw initial player rectangle at start of game
     while i < 1:
         #create player shape
-        player = pygame.Rect(200, player_start, player_width, player_height)
+        player =  pygame.Rect(x, player_start, player_width, player_height)
         i+=1
         
     if menuState == "game":
@@ -289,15 +288,17 @@ while run:
 
         #handle A/D keys pressed to move player accordingly
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a] and player.x - player_velocity >= 0:
-                player.x -= player_velocity
-        if keys[pygame.K_d] and player.x + player_velocity + player_width <= screen_width:
-                player.x += player_velocity
+        if keys[pygame.K_a] and player.x - player_velocityX >= 0:
+                player.x -= player_velocityX
+        if keys[pygame.K_d] and x + player_velocityX + player_width <= screen_width:
+                player.x += player_velocityX
         #tab pressed so pause current game
         if event.type == pygame.KEYDOWN and menuState == "game":
             if event.key == pygame.K_TAB:
                 menuState = "gamePaused"
                 break
+            if event.key == pygame.K_SPACE and not isJumping:
+                isJumping = True
 
         #space pressed so resume game from being paused
         if event.type == pygame.KEYDOWN and menuState == "gamePaused":
@@ -316,6 +317,13 @@ while run:
         #quit application
         if event.type == pygame.QUIT:
             run = False
+
+    if isJumping is True:
+        player.y -= player_velocityY
+        player_velocityY -= 1
+        if player_velocityY < -10:
+            isJumping = False
+            player_velocityY = 10
 
     for star in stars[:]:
         star.y += star_velocity
